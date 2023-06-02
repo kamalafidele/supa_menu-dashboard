@@ -2,65 +2,60 @@ import React from "react";
 import styled from "styled-components";
 import jwtDecode from "jwt-decode";
 
-import Sidebar from "../components/Sidebar";
 import authStorage from '../auth/storage';
-import variables from '../constants/variables';
+import Sidebar from "../components/Sidebar";
 import COLOR_PALETTE from "../constants/colors";
 import ChartElement from "../components/Chart";
+import OverviewCard from "../components/OverviewCard";
+import DashboardTopNav from "../components/DashboardTopNav";
 
 function OverviewPage() {
   const token = authStorage.getToken();
   const user = jwtDecode(token);
 
   const graph_data = {
-    series: [{
+    series: [
+      {
       name: 'Series 1',
-      data: [30, 40, 50, 60, 70, 80, 120],
-    }],
+      data: [10, 20, 30, 40, 50, 60],
+      },
+      {
+        name: 'Series 2',
+        data: [10, 40, 50, 70, 80, 100]
+      }
+  ],
     options: {
       chart: {
-        id: 'stats-graph'
+        id: 'stats-graph',
+        background: COLOR_PALETTE.WHITE
       },
       xaxis: {
-        categories: [1921, 1930, 1935, 1936, 1940, 1945, 1950]
+        categories: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]
       },
-      title: "Today's trends"
+      stroke: { curve: 'smooth' }},
+      title: { style: { fontSize: 24, fontFamily: 'bold' }, text: "Today's Trends" },
     }
-  }
+  
   return (
     <Container>
       <Sidebar />
       <Wrapper>
-        <div className="top-container">
-          <h3>Overview</h3>
-          <div className="profile-container">
-            <div className="row"> <i className="fa-sharp fa-solid fa-magnifying-glass"></i> </div>
-            <div className="row"> <i className="fa-solid fa-bell"></i> </div>
-            <div className="row">|</div>
-            <div className="profile-details">
-                <span>{user.name}</span>
-                <img src={ user.picture || variables.DEFAULT_PROFILE } alt="profile" width={50} height={50}/>
-            </div>
-          </div>
-        </div>
+        <DashboardTopNav user={user} title={'Overview'}/>
 
         <div className="stats-container">
-            <div className="stats-card" style={{ marginLeft: 0 }}>
-                <span className="title">Clients</span>
-                <span className="details">60</span>
-            </div>
-            <div className="stats-card">
-                <span className="title">Revenues {`(FRW)`}</span>
-                <span className="details">38234000</span>
-            </div>
-            <div className="stats-card">
-                <span className="title">Orders</span>
-                <span className="details">67569</span>
-            </div>
+            <OverviewCard title={'Clients'} subtitle={60} hMargin={0}/>
+            <OverviewCard title={'Revenues (FRW)'} subtitle={38234000}/>
+            <OverviewCard title={'Orders'} subtitle={67569}/>
         </div>
 
-        <div className="graph">
-          {/* <ChartElement chartData={graph_data}/> */}
+        <div className="graph-container">
+          <ChartElement series={graph_data.series} options={graph_data.options}/>
+          <div className="cards-container">
+            <div style={{ borderBottom: `2px solid ${COLOR_PALETTE.GRAY}`}}><OverviewCard title={'Orders'} subtitle={67569} width={100} vMargin={0} hMargin={0} radius={0}/></div>
+            <div style={{ borderBottom: `2px solid ${COLOR_PALETTE.GRAY}`}}><OverviewCard title={'Items'} subtitle={54567} width={100} vMargin={0} hMargin={0} radius={0}/></div>
+            <div style={{ borderBottom: `2px solid ${COLOR_PALETTE.GRAY}`}}><OverviewCard title={'Order/hour'} subtitle={4560} width={100} vMargin={0} hMargin={0} radius={0}/></div>
+            <div><OverviewCard title={'Clients'} subtitle={60} width={100} vMargin={0} hMargin={0} radius={0}/></div>
+          </div>
         </div>
       </Wrapper>
     </Container>
@@ -80,57 +75,20 @@ const Wrapper = styled.div`
   margin-left: 20%;
   padding: 10px;
 
-  .top-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .profile-container {
-        align-items: center;
-        display: flex;
-        .row {
-            padding: 10px;
-        }
-
-        .profile-details {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        span {
-            margin: 0px 10px 0px 10px;
-        }
-        img {
-            border-radius: 50%;
-            border: 1px solid ${COLOR_PALETTE.PRIMARY}
-        }
-    }
-  }
-
   .stats-container {
     display: flex;
     justify-content: flex-start;
+  }
 
-    .stats-card {
-        width: 25%;
-        height: 100px;
-        background-color: ${COLOR_PALETTE.WHITE};
-        padding: 10px;
-        border-radius: 10px;
-        margin: 10px 20px 10px 20px;
+  .graph-container {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-start;
 
-        .title {
-            text-align: center;
-            display: block;
-            color: ${COLOR_PALETTE.GRAY};
-            font-size: 24px;
-        }
-
-        .details {
-            text-align: center;
-            display: block;
-            font-size: 20px;
-        }
+    .cards-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
     }
   }
 `;

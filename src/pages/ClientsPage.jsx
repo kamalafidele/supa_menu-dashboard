@@ -1,15 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
+import authStorage from '../auth/storage';
+
+
 import Sidebar from '../components/Sidebar';
+import DashboardTopNav from '../components/DashboardTopNav';
+import jwtDecode from 'jwt-decode';
 
 
 function ClientsPage() {
+    const token = authStorage.getToken();
+    const user = jwtDecode(token);
 
     return (
         <Container>
             <Sidebar/>
             <Wrapper>
-                <h3>Clients</h3>
+                <DashboardTopNav user={user} title={'Clients'}/>
             </Wrapper>
         </Container>
     );

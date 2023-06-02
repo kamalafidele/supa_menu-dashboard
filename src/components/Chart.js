@@ -1,11 +1,11 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
 
-function ChartElement({ chartData }) {
+function ChartElement({ options, series }) {
 
     return (
-        <div>
-            <Chart options={chartData.options} series={chartData.series} type='line' width={500} height={350}/>
+        <div style={{ overflow: 'hidden', borderTopLeftRadius: 5 }}>
+            <Chart options={options} series={series} type='line' width={1000} height={462}/>
         </div>
     );
 }

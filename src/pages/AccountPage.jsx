@@ -1,15 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
+import jwtDecode from 'jwt-decode';
 
 import Sidebar from '../components/Sidebar';
+import authStorage from '../auth/storage';
+import DashboardTopNav from '../components/DashboardTopNav';
 
 function AccountPage() {
+    const token = authStorage.getToken();
+    const user = jwtDecode(token);
 
     return (
         <Container>
             <Sidebar/>
             <Wrapper>
-                <h3>Overview</h3>
+                <DashboardTopNav user={user} title={'Account'}/>
             </Wrapper>
         </Container>
     );
