@@ -26,7 +26,7 @@ function AccountPage() {
             <Wrapper>
                 <DashboardTopNav user={user} title={'Account'}/>
                 <Content>
-                    <Button text={'Logout'} onClick={handleLogout}/>
+                    <Button text={'Logout'} onClick={handleLogout} width={20}/>
                 </Content>
             </Wrapper>
         </Container>

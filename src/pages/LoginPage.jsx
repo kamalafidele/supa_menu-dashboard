@@ -35,12 +35,12 @@ function LoginPage() {
 
   useEffect(() => {
     if (authStorage.getToken())  navigate('/overview');
-  }, []);
+  }, [navigate]);
 
   return (
     <Container>
       <div className="logo-container">
-        <Logo font_size={40} />
+        <Logo font_size={40} onClick={() => navigate('/')}/>
       </div>
       <div className="details-container">
         <div>

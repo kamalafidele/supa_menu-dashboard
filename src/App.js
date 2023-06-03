@@ -9,10 +9,12 @@ import AccountPage from "./pages/AccountPage";
 import SettingsPage from "./pages/SettingsPage";
 import UsersPage from "./pages/UsersPage";
 import ClientsPage from "./pages/ClientsPage";
+import HomePage from "./pages/HomePage";
 
 function App() {
   return (
     <Routes>
+      <Route element={<HomePage/>} path="/"/>
       <Route element={<LoginPage/>}  path="/login" />
       <Route element={<SignupPage/>} path="/signup" />
       <Route element={<ProtectedRoute><OverviewPage/></ProtectedRoute>} path="/overview"/>

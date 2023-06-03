@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactModal from 'react-modal';
+
 import COLOR_PALETTE from '../constants/colors';
 
 function Modal({ isOpen = false, closeModal, children }) {

@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+
 import COLOR_PALETTE from '../constants/colors';
 
-function AppLogo({ first_part_color = COLOR_PALETTE.BLACK, last_part_color = COLOR_PALETTE.WHITE, font_size = 30 }) {
+function AppLogo({ first_part_color = COLOR_PALETTE.BLACK, last_part_color = COLOR_PALETTE.WHITE, font_size = 30, onClick }) {
     return (
-        <div>
+        <div style={{ cursor: 'pointer' }} onClick={onClick}>
             <Span style={{ color: first_part_color, fontSize: `${font_size}px` }}>Supa</Span>
             <Span style={{ color: last_part_color, fontSize: font_size }}>Menu</Span>
         </div>

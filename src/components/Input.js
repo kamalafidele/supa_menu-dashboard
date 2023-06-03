@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+
 import COLOR_PALETTE from '../constants/colors';
 
 function Input({ type, placeHolder, onChange, width = 50, ...otherProps }) {
