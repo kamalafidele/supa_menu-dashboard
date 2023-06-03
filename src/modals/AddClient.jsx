@@ -1,37 +1,60 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
 import Modal from "../components/Modal";
 import Input from "../components/Input";
+import Select from '../components/Select';
 import Button from "../components/Button";
 import ErrorMessage from '../components/ErrorMessage';
+import clientsApi from "../api/clients";
+import ClientContext from '../contexts/index';
 
 const validationSchema = Yup.object().shape({
   clientName: Yup.string().required().label("Client Name"),
   category: Yup.string().required().label("Category"),
   representative: Yup.string().required().label("Representative"),
-  date: Yup.string().required().label("Creation Date"),
   address: Yup.string().required().label("Address"),
   email: Yup.string().required().email().label("Email"),
   phone: Yup.string().required().label("Phone"),
   bankAccount: Yup.string().required().label("Bank Account"),
 });
 
+const CATEGORIES = [
+  { value: 'HOTEL', label: 'Hotel' },
+  { value: 'RESTO', label: 'Restaurant' },
+  { value: 'PUB', label: 'Pub' },
+];
+
 function AddClient({ isOpen, closeModal }) {
-  const handleAddClient = async (values) => {
-    console.log(values);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const { clients, setClients } = useContext(ClientContext);
+
+  const requestClose = () => {
+    closeModal();
+  }
+
+  const handleAddClient = async ({ clientName, category, representative, address, email, phone, bankAccount }) => {
+    setLoading(true);
+    const result = await clientsApi.addClient(clientName, category, representative, address, email, phone, bankAccount);
+    setLoading(false);
+
+    if (!result.ok) return setError(result.data.error || result.data.status);
+
+    setClients([...clients, result.data.client ]);
+    requestClose();
   };
 
   return (
-    <Modal closeModal={closeModal} isOpen={isOpen}>
+    <Modal closeModal={(e) => requestClose() } isOpen={isOpen}>
       <h3 style={{ textAlign: "center" }}>Client</h3>
       <Formik
         initialValues={{
           clientName: "",
           category: "",
           representative: "",
-          date: "",
           address: "",
           email: "",
           phone: "",
@@ -43,24 +66,27 @@ function AddClient({ isOpen, closeModal }) {
         {({ handleChange, handleSubmit, setFieldTouched, touched, errors }) => (
           <div className="inputs-container">
             <div className="row">
+              { error && <ErrorMessage text={error}/>}
+            </div>
+            <div className="row">
               <label htmlFor="client">Client</label>
               <Input
                 placeHolder={"Client name"}
                 type={"text"}
                 width={100}
-                onChange={handleChange}
+                onChange={handleChange('clientName')}
                 onBlur={() => setFieldTouched("clientName")}
               />
               { touched.clientName && <ErrorMessage text={errors.clientName}/> }
             </div>
             <div className="row">
               <label htmlFor="category">Category</label>
-              <Input
-                placeHolder={"Choose Category"}
-                type={"text"}
-                width={100}
-                onChange={handleChange}
-                onBlur={() => setFieldTouched("category")}
+              <Select 
+              data={CATEGORIES} 
+              onChange={handleChange('category')}
+              placeHolder={'Choose Category'}
+              width={100}
+              onBlur={() => setFieldTouched("category")}
               />
               { touched.category && <ErrorMessage text={errors.category}/> }
             </div>
@@ -70,21 +96,10 @@ function AddClient({ isOpen, closeModal }) {
                 placeHolder={"Names"}
                 type={"text"}
                 width={100}
-                onChange={handleChange}
+                onChange={handleChange('representative')}
                 onBlur={() => setFieldTouched("representative")}
               />
               { touched.representative && <ErrorMessage text={errors.representative}/> }
-            </div>
-            <div className="row">
-              <label htmlFor="date">Date of Creation</label>
-              <Input
-                placeHolder={"Month & Year"}
-                type={"date"}
-                width={100}
-                onChange={handleChange}
-                onBlur={() => setFieldTouched("date")}
-              />
-              { touched.date && <ErrorMessage text={errors.date}/> }
             </div>
             <div className="row">
               <label htmlFor="address">Address</label>
@@ -92,7 +107,7 @@ function AddClient({ isOpen, closeModal }) {
                 placeHolder={"Province, District, Sector, Cell"}
                 type={"text"}
                 width={100}
-                onChange={handleChange}
+                onChange={handleChange('address')}
                 onBlur={() => setFieldTouched("address")}
               />
               { touched.address && <ErrorMessage text={errors.address}/> }
@@ -103,7 +118,7 @@ function AddClient({ isOpen, closeModal }) {
                 placeHolder={"Email address"}
                 type={"email"}
                 width={100}
-                onChange={handleChange}
+                onChange={handleChange('email')}
                 onBlur={() => setFieldTouched("email")}
               />
               { touched.email && <ErrorMessage text={errors.email}/> }
@@ -114,7 +129,7 @@ function AddClient({ isOpen, closeModal }) {
                 placeHolder={"Phone"}
                 type={"tel"}
                 width={100}
-                onChange={handleChange}
+                onChange={handleChange('phone')}
                 onBlur={() => setFieldTouched("phone")}
               />
               { touched.phone && <ErrorMessage text={errors.phone}/> }
@@ -125,7 +140,7 @@ function AddClient({ isOpen, closeModal }) {
                 placeHolder={"Bank Account"}
                 type={"text"}
                 width={100}
-                onChange={handleChange}
+                onChange={handleChange('bankAccount')}
                 onBlur={() => setFieldTouched("bankAccount")}
               />
               { touched.bankAccount && <ErrorMessage text={errors.bankAccount}/> }
@@ -135,7 +150,7 @@ function AddClient({ isOpen, closeModal }) {
               style={{ display: "flex", justifyContent: "center" }}
             >
               <Button
-                text={"Add Client"}
+                text={ loading ? 'Loading...' : "Add Client" }
                 width={50}
                 onClick={handleSubmit}
                 type={"submit"}

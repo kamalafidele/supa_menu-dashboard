@@ -69,7 +69,7 @@ function LoginPage() {
                 {error && <ErrorMessage text={error} />}
               </div>
               <div className="row">
-                <label htmlFor="password">Email</label>
+                <label htmlFor="email">Email</label>
                 <Input
                   type={"email"}
                   onChange={handleChange("email")}
