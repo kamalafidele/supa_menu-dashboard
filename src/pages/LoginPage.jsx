@@ -71,7 +71,7 @@ function LoginPage() {
               <div className="row">
                 <label htmlFor="password">Email</label>
                 <Input
-                  type={"text"}
+                  type={"email"}
                   onChange={handleChange("email")}
                   onBlur={() => setFieldTouched("email")}
                   placeHolder={"Email adddress"}
