@@ -9,6 +9,7 @@ import Button from "../components/Button";
 import ErrorMessage from '../components/ErrorMessage';
 import clientsApi from "../api/clients";
 import ClientContext from '../contexts/index';
+import COLOR_PALETTE from "../constants/colors";
 
 const validationSchema = Yup.object().shape({
   clientName: Yup.string().required().label("Client Name"),
@@ -49,7 +50,7 @@ function AddClient({ isOpen, closeModal }) {
 
   return (
     <Modal closeModal={(e) => requestClose() } isOpen={isOpen}>
-      <h3 style={{ textAlign: "center" }}>Client</h3>
+      <h3 style={{ textAlign: "center", color: COLOR_PALETTE.PRIMARY }}>Add New Client</h3>
       <Formik
         initialValues={{
           clientName: "",

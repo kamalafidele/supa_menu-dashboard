@@ -34,6 +34,9 @@ const Container = styled.div`
             padding: 10px;
         }
 
+        i {
+            cursor: pointer;
+        }
         .profile-details {
             display: flex;
             justify-content: space-between;

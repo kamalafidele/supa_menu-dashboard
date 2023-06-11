@@ -1,8 +1,6 @@
 import apiClient from "./client";
 import authStorage from "../auth/storage";
 
-const token = authStorage.getToken();
-
 const addClient = async (
   name,
   category,
@@ -20,11 +18,11 @@ const addClient = async (
     email,
     phone,
     bankAccount,
-  }, { headers: { authorization: `Bearer ${token}` }});
+  }, { headers: { authorization: `Bearer ${authStorage.getToken()}` }});
 
-const getClient = async (id) => apiClient.get(`/clients/${id}`, {}, { headers: { authorization: `Bearer ${token}` }});
+const getClient = async (id) => apiClient.get(`/clients/${id}`, {}, { headers: { authorization: `Bearer ${authStorage.getToken()}` }});
 
-const getAllClients = async () => apiClient.get('/clients', {}, { headers: { authorization: `Bearer ${token}` }});
+const getAllClients = async () => apiClient.get('/clients', {}, { headers: { authorization: `Bearer ${authStorage.getToken()}` }});
 
 const clientsApi = {
     addClient,
